@@ -3,8 +3,8 @@ import Navbar from "../../components/navbar/navbar";
 
 export default function Header() {
   return (
-    <header>
-      <Navbar></Navbar>
+    <header className="bg-gray-800 shadow-lg">
+      <Navbar />
     </header>
   );
 }
