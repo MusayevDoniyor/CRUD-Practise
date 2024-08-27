@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
-  const [userName, setUserName] = useState("mor_2314");
-  const [password, setPassword] = useState("83r5^_");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  let user = localStorage.getItem("user") && navigate("/");
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const submitUser = async (e) => {
     e.preventDefault();
@@ -29,60 +36,84 @@ export default function Login() {
       setPassword("");
 
       localStorage.setItem("user", JSON.stringify(res.data));
+
+      toast.success("Login successful! Redirecting...", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+
+      setTimeout(() => navigate("/"), 2100);
     } catch (error) {
-      console.log("Login error:", error.message);
+      console.error("Login error:", error.message);
       setError("Login failed. Please check your credentials.");
+
+      toast.error(`Error: ${error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     } finally {
-      navigate("/");
       setLoading(false);
     }
   };
 
   return (
-    <main className="max-w-screen-2xl min-h-screen">
-      <section className="py-10 px-4 md:px-16 min-h-screen bg-slate-200 flex justify-center items-center">
+    <main className="w-full h-screen bg-gray-800 flex items-center justify-center p-7">
+      <section className="w-full max-w-md ">
         <form
           onSubmit={submitUser}
-          className="bg-cyan-300 py-3 px-7 w-3/5 sm:w-2/5 flex flex-col gap-7 rounded-lg"
+          className="bg-gray-900 text-yellow-400 py-8 px-6 rounded-lg shadow-lg border border-gray-700"
         >
-          <h2 className="text-center text-3xl font-bold">Login :{")"}</h2>
+          <h2 className="text-center text-3xl font-bold mb-6">Login</h2>
 
-          <div className="flex flex-col gap-3">
-            <label htmlFor="username">Enter Username:</label>
+          <ToastContainer />
 
+          <div className="flex flex-col gap-4 mb-6">
+            <label htmlFor="username" className="text-lg font-semibold">
+              Enter Username:
+            </label>
             <input
               type="text"
               id="username"
               name="username"
               value={userName}
-              onChange={(e) => {
-                setUserName(e.target.value);
-              }}
-              className="py-3 outline-none border-none px-4 rounded-sm"
+              onChange={(e) => setUserName(e.target.value)}
+              className="py-3 px-4 border border-gray-700 bg-gray-800 text-yellow-400 rounded-sm outline-none placeholder:text-gray-400"
+              placeholder="Username..."
             />
           </div>
 
-          <div className="flex flex-col gap-3">
-            <label htmlFor="password">Enter Password:</label>
+          <div className="flex flex-col gap-4 mb-6">
+            <label htmlFor="password" className="text-lg font-semibold">
+              Enter Password:
+            </label>
 
-            <div className="flex flex-col lg:flex-row gap-3 ">
+            <div className="flex items-center">
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                className="py-3 outline-none border-none px-4 flex-1 rounded-sm"
+                onChange={(e) => setPassword(e.target.value)}
+                className="py-3 px-4 border border-gray-700 bg-gray-800 text-yellow-400 rounded-sm w-[79%] outline-none placeholder:text-gray-400"
+                placeholder="Password..."
               />
 
               <button
                 type="button"
-                className="shadow-md px-3 font-semibold text-lg"
-                onClick={() => {
-                  setShowPassword(!showPassword);
-                }}
+                className="ml-2 bg-yellow-400 text-gray-800 py-3 px-4 rounded-sm font-semibold transition-colors duration-300"
+                onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -91,10 +122,14 @@ export default function Login() {
 
           <button
             type="submit"
-            className="bg-[#333] text-white mb-3 py-3 px-2 font-medium text-lg sm:text-xl rounded-md"
+            className="bg-yellow-400 text-gray-800 py-3 px-6 font-semibold text-lg rounded-md hover:bg-yellow-300 transition-colors duration-300 w-full"
           >
-            Submit
+            {loading ? "Loading..." : "Submit"}
           </button>
+
+          {error && (
+            <p className="text-red-500 text-sm text-center mt-4">{error}</p>
+          )}
         </form>
       </section>
     </main>

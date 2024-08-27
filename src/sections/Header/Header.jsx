@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../../components/navbar/navbar";
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
   const navLinks = [
@@ -25,13 +26,21 @@ export default function Header() {
     },
     {
       id: 5,
+      title: "Cart",
       path: "/cart",
     },
   ];
 
-  return (
-    <header className="bg-gray-800 shadow-lg">
-      <Navbar navLinks={navLinks} />
-    </header>
-  );
+  const location = useLocation();
+
+  // Render Header and Navbar only if not on the /login route
+  if (location.pathname !== "/login") {
+    return (
+      <header className="bg-gray-800 shadow-md">
+        <Navbar navLinks={navLinks} />
+      </header>
+    );
+  }
+
+  return null; // Return nothing if on the /login route
 }

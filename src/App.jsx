@@ -17,7 +17,8 @@ function App() {
 
       <div>
         <Header />
-        <main className="px-4 md:px-16">
+
+        <main className="px-4 md:px-16 pt-24">
           <Routes>
             <Route path="/" element={<Home />} />
 
