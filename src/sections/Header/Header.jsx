@@ -33,7 +33,6 @@ export default function Header() {
 
   const location = useLocation();
 
-  // Render Header and Navbar only if not on the /login route
   if (location.pathname !== "/login") {
     return (
       <header className="bg-gray-800 shadow-md">
@@ -42,5 +41,5 @@ export default function Header() {
     );
   }
 
-  return null; // Return nothing if on the /login route
+  return null;
 }

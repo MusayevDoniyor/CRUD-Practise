@@ -8,6 +8,7 @@ html {
   font-weight: 500;
 }
 
-body {
-  background-color: hsl(0, 0%, 60%);
+::selection {
+  color: #1f2937;
+  background-color: #fbbf24;
 }

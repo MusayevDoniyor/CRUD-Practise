@@ -2,28 +2,30 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import api from "../../api/api";
 import {
-  fetchProductsLoading,
-  fetchProductsSuccess,
-  fetchProductsFailure,
-} from "../../store/slices/productsSlice";
+  fetchLimitedProductsLoading,
+  fetchLimitedProductsSuccess,
+  fetchLimitedProductsFailure,
+} from "../../store/slices/limitedProductsSlice";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { products, loading, error } = useSelector((state) => state.products);
+  const { limitedProducts, loading, error } = useSelector(
+    (state) => state.limitedProducts
+  );
 
   useEffect(() => {
     const fetchLimitedProducts = async () => {
-      dispatch(fetchProductsLoading());
-      dispatch(fetchProductsFailure(null));
+      dispatch(fetchLimitedProductsLoading());
+      dispatch(fetchLimitedProductsFailure(null));
 
       try {
         const res = await api.get("/products?limit=4");
-        dispatch(fetchProductsSuccess(res.data));
+        dispatch(fetchLimitedProductsSuccess(res.data));
       } catch (error) {
-        dispatch(fetchProductsFailure(error.message));
+        dispatch(fetchLimitedProductsFailure(error.message));
         toast.error(`Error: ${error.message}`);
       }
     };
@@ -46,10 +48,10 @@ export default function Home() {
         theme="dark"
       />
 
-      {!loading && products.length > 0 ? (
+      {!loading && limitedProducts.length > 0 ? (
         <>
-          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mx-auto w-full max-w-6xl">
-            {products.map((product) => (
+          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mx-auto w-full max-w-7xl">
+            {limitedProducts.map((product) => (
               <li
                 className="bg-gray-900 text-yellow-400 border border-gray-700 rounded-lg p-4"
                 key={product.id}

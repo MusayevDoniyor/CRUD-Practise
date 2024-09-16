@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
+import { FaRegHeart } from "react-icons/fa6";
 
 const Navbar = ({ navLinks }) => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  let user = localStorage.getItem("user");
 
   return (
     <nav className="flex justify-between items-center px-6 md:px-10 py-4 bg-gray-800 text-gray-200 shadow-md fixed w-full z-20 ">
@@ -55,6 +58,15 @@ const Navbar = ({ navLinks }) => {
         <div className="flex gap-6 items-center ml-7">
           <div className="relative">
             <Link
+              to="/"
+              className="text-lg text-yellow-400 hover:text-yellow-300 transition-colors duration-300 flex items-center"
+            >
+              <FaRegHeart size={24} />
+            </Link>
+          </div>
+
+          <div className="relative">
+            <Link
               to={navLinks[4].path}
               className="text-lg text-yellow-400 hover:text-yellow-300 transition-colors duration-300 flex items-center"
             >
@@ -66,13 +78,13 @@ const Navbar = ({ navLinks }) => {
           </div>
 
           <button
-            className="text-base bg-yellow-400 text-gray-800 py-2 rounded-md transition-colors duration-300 font-semibold px-2"
+            className="text-base bg-yellow-400 hover:bg-yellow-300 text-gray-800 py-2 rounded-md transition-colors duration-300 font-semibold px-2"
             onClick={() => {
               localStorage.removeItem("user");
               navigate("/login");
             }}
           >
-            Log out
+            {user ? "Log out" : "Log in"}
           </button>
         </div>
       </div>
@@ -109,13 +121,13 @@ const Navbar = ({ navLinks }) => {
             </Link>
 
             <button
-              className="text-xl bg-yellow-400 text-gray-800 py-2 rounded-md transition-colors duration-300 font-bold"
+              className="text-xl bg-yellow-400 hover:bg-yellow-300 text-gray-800 py-2 rounded-md transition-colors duration-300 font-bold"
               onClick={() => {
                 localStorage.removeItem("user");
                 navigate("/login");
               }}
             >
-              Log out
+              {user ? "Log out" : "Log in"}
             </button>
           </div>
         </div>

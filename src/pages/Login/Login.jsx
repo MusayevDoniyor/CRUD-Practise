@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function Login() {
   const [userName, setUserName] = useState("");
@@ -69,14 +70,22 @@ export default function Login() {
   };
 
   return (
-    <main className="w-full h-screen bg-gray-800 flex items-center justify-center p-7">
+    <main className="w-full h-screen bg-gray-700 flex items-center justify-center p-7">
       <section className="w-full max-w-md ">
         <form
           onSubmit={submitUser}
           className="bg-gray-900 text-yellow-400 py-8 px-6 rounded-lg shadow-lg border border-gray-700"
         >
-          <h2 className="text-center text-3xl font-bold mb-6">Login</h2>
+          <div className="relative p-2">
+            <Link
+              className="inline-block absolute top-0 left-0 hover:text-yellow-300"
+              to="/"
+            >
+              <FaArrowLeft size={20} />
+            </Link>
 
+            <h2 className="text-center text-3xl font-bold mb-6">Login</h2>
+          </div>
           <ToastContainer />
 
           <div className="flex flex-col gap-4 mb-6">
@@ -112,7 +121,7 @@ export default function Login() {
 
               <button
                 type="button"
-                className="ml-2 bg-yellow-400 text-gray-800 py-3 px-4 rounded-sm font-semibold transition-colors duration-300"
+                className="ml-2 bg-yellow-400 hover:bg-yellow-300 text-gray-800 py-3 px-4 rounded-sm font-semibold transition-colors duration-300"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? "Hide" : "Show"}
@@ -122,6 +131,7 @@ export default function Login() {
 
           <button
             type="submit"
+            disabled={loading}
             className="bg-yellow-400 text-gray-800 py-3 px-6 font-semibold text-lg rounded-md hover:bg-yellow-300 transition-colors duration-300 w-full"
           >
             {loading ? "Loading..." : "Submit"}
